@@ -7,3 +7,4 @@ Gemfile.lock
 *.sqlite3
 :dev
 test*.rb
+*.komodoproject
