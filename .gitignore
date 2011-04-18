@@ -1,3 +1,9 @@
 pkg/*
 *.gem
 .bundle
+# .gitignore
+Gemfile.lock
+*.log
+*.sqlite3
+:dev
+test*.rb
