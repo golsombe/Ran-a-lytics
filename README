@@ -1,0 +1,33 @@
+﻿Ruby Analytics or Ran_A_Lytics is an ActiveRecord extension that provides simple yet effective pivoting of pure Ansi92 SQL though MySQL and Infobright. Though it is not required to pivot a query of an Infobright database, the heavy cost of aggregates in analytical make it impractical to pivot large datasets of INNODB or MYISAM stored data. You can check out a demo or the community edition of Infobright by going to http://www.infobright.org. 
+
+Quickstart
+1) Follow the instructins on setting up an Infobright MySQL instance
+2) Grab the sample database from http://bit.ly/gBQnaD
+
+# -*- encoding: utf-8 -*-
+$:.push File.expand_path("../lib", __FILE__)
+require 'rubygems'
+require 'ran_a_lytics'
+require 'active_record'
+require 'time'
+puts "Gathering data"
+#Connect to a database
+ActiveRecord::Base.establish_connection(
+  :adapter  => "mysql",
+ :host     => "localhost",
+ :username => "root",
+ :password => "",”
+ :database => "carsales",
+ :socket => "/tmp/mysql-ib.sock")
+#Define the model
+class FactSalesWide < ActiveRecord::Base
+   set_table_name "fact_sales_wide"
+   make_pivotable
+end
+
+#Pivot  a query for 10,000 rows into car_make rows, by transaction types columns for two measures 
+starttime = Time.now
+ma = FactSalesWide.PivotTable(:columns=> ['dlr_trans_type as Transaction'],:rows=>['dim_cars.make_name as make'],:measures=>['sum(sales_commission) as sum_sales_commission', 'sum(sales_discount) as sum_sales_discount'], :joins => ['JOIN dim_cars ON fact_sales_wide.make_id = dim_cars.make_id'])
+endtime = Time.now
+puts ma.to_json
+
