@@ -18,9 +18,12 @@ ActiveRecord::Base.establish_connection(
  :username => "root",
  :password => "",”
  :database => "carsales",
- :socket => "/tmp/mysql-ib.sock")
-#Define the model
-class FactSalesWide < ActiveRecord::Base
+ :socket => "/tmp/mysql-ib.sock"
+)
+
+
+#Define the model
+class FactSalesWide < ActiveRecord::Basero
    set_table_name "fact_sales_wide"
    make_pivotable
 end
@@ -31,3 +34,20 @@ ma = FactSalesWide.PivotTable(:columns=> ['dlr_trans_type as Transaction'],:rows
 endtime = Time.now
 puts ma.to_json
 
+Details
+
+Model
+make_pivotable
+end
+
+Controller
+def pivot_me
+	rows = ['sql_field_or_exp as alias','...'] # Get combined as row_fld1-row_fld2-...
+	columns = ['sql_field_or_exp as alias','...'] #Get converted into unique col1_value1-col2_value1-...
+	measures = ['aggregate_fn(field(s)) as alias','...'] #Indivual measure totals by pivot columsn,rows, gtotl
+	
+	pvt_ary = Model_singualr.PivotTable(:rows=>rows, :columns=>columns,:measures=>measures, :conditions=>[sql_exp(s),...], :joins=>['join dim on fact.fk_dim = dim.id']
+	puts pvt_ary.to_json #Displays an array of hashes
+			     #[row_alias=>'value', :col_alias1=>{measure1_alias=>value,measure2_alias=>value,...}, :col[2-N]..., {measure1_alias=>value,measure2_alias=>value,...} as row_totals]
+			     #[{measure1_alias=>value,measure2_alias=>value,...} as grand_totals]
+end

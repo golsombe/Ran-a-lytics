@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = "Robert Hall"
   s.email       = "robert.hall@itatc.com"
-  s.homepage    = "http://github.com/golsombe/Ran_a_lytics"
+  s.homepage    = "http://github.com/golsombe/Ran-a-lytics"
   s.summary     = "An Infobright compainion Rails extention"
   s.description = "Providing analytics as a DSL to an InfobrightCE database"
 
